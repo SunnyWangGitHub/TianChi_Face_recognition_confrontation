@@ -30,7 +30,7 @@ warnings.filterwarnings('ignore')
 import sys
 
 sys.path.append('../')
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 from Face_recognition.inception_resnet_v1.inception_resnet_v1 import InceptionResnetV1
@@ -191,7 +191,7 @@ def main():
 
     # paras
     eps = 1
-    steps = 70
+    steps = 50
     output_path = './output_img'
     momentum = 1.0
 

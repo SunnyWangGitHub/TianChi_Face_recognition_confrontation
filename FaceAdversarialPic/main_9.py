@@ -1,9 +1,14 @@
 #python3
 # -*- coding: utf-8 -*-
-# File  : main_7.py
+# File  : main_9.py
 # Author: Wang Chao
 # Date  : 2019-08-29
 
+#python3
+# -*- coding: utf-8 -*-
+# File  : main_8.py
+# Author: Wang Chao
+# Date  : 2019-08-29
 
 
 import os
@@ -137,8 +142,8 @@ def main():
     IR_SE_50 = Backbone(50,mode='ir_se').eval().to(device)
     print('load IR_SE_50 successfully')
 
-    # mobileFaceNet = MobileFaceNet(512).eval().to(device)
-    # print('load mobileFaceNet successfully')
+    mobileFaceNet = MobileFaceNet(512).eval().to(device)
+    print('load mobileFaceNet successfully')
 
     # IR_152_model_2 = IR_152([112, 112])
     # IR_152_model_2.load_state_dict(
@@ -229,6 +234,7 @@ def main():
         origin_IR_50_model_1 = IR_50_model_1(in_variable)
         origin_IR_152_model_1 = IR_152_model_1(in_variable)
         origin_IR_SE_50 = IR_SE_50(in_variable)
+        origin_mobileFaceNet = mobileFaceNet(in_variable)
         # # origin_IR_152_model_2 = IR_152_model_2(in_variable)
         origin_Insightface_iresent34 = Insightface_iresnet34(in_variable)
         origin_Insightface_iresent50 = Insightface_iresnet50(in_variable)
@@ -257,6 +263,7 @@ def main():
             out_IR_50_model_1 = IR_50_model_1(in_variable)
             out_IR_152_model_1 = IR_152_model_1(in_variable)
             out_IR_SE_50 = IR_SE_50(in_variable)
+            out_mobileFaceNet = mobileFaceNet(in_variable)
             # # out_IR_152_model_2 = IR_152_model_2(in_variable)
             out_Insightface_iresent34 = Insightface_iresnet34(in_variable)
             out_Insightface_iresent50 = Insightface_iresnet50(in_variable)
@@ -272,6 +279,7 @@ def main():
                    criterion(origin_IR_50_model_1, out_IR_50_model_1) + \
                    criterion(origin_IR_152_model_1, out_IR_152_model_1) + \
                    criterion(origin_IR_SE_50, out_IR_SE_50) + \
+                   criterion(origin_mobileFaceNet, out_mobileFaceNet) + \
                    criterion(origin_Insightface_iresent34, out_Insightface_iresent34) + \
                    criterion(origin_Insightface_iresent50, out_Insightface_iresent50) + \
                    criterion(origin_Insightface_iresent100, out_Insightface_iresent100) + \
@@ -280,12 +288,11 @@ def main():
 
 
 
-
             # print('loss : %f' % loss)
             # compute gradients
             loss.backward(retain_graph=True)
 
-            g_noise = momentum * g_noise + (in_variable.grad / in_variable.grad.data.norm(1))
+            g_noise = momentum * g_noise + (in_variable.grad / in_variable.grad.data.norm(1))*0.9
             g_noise = g_noise / g_noise.data.norm(1)
 
             if i % 2 == 0:
@@ -311,7 +318,7 @@ def main():
         adv = adv[..., ::-1]
         adv = np.clip(adv, 0, 255).astype(np.uint8)
 
-        sample_dir = '/notebooks/Workspace/tmp/pycharm_project_314/TianChi/main_7_output-8-29/'
+        sample_dir = '/notebooks/Workspace/tmp/pycharm_project_314/TianChi/main_8_output-8-29/'
         if not os.path.exists(sample_dir):
             os.makedirs(sample_dir)
 
