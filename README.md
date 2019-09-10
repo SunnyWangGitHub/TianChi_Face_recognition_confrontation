@@ -5,7 +5,7 @@ The solution of Face recognition confrontation competition on TianChi :  24th pl
 competition link:https://tianchi.aliyun.com/competition/entrance/231745/rankingList
 
 ### method：
-Ensemble Attack_Gaussian Smooth + Use Average feature face as target
+IFGSM + Ensemble Attack_Gaussian Smooth + Use Average feature face as target
 
 ### implementation environment：
 + pytorch
